@@ -26,6 +26,7 @@
   <label>Mật khẩu: <input type="password" id="loginPass"></label><br>
   <button class="btn" onclick="dangNhap()">Đăng nhập</button>
   <button class="btn-warning" onclick="dangKy()">Đăng ký</button>
+  
 </div>
 
 <div id="mainContent">
@@ -93,6 +94,16 @@ let maHangMap = JSON.parse(localStorage.getItem("ma_hang_map") || '{}');
 let giaoDichList = JSON.parse(localStorage.getItem("congno") || "[]");
 let editingIndex = -1;
 let users = JSON.parse(localStorage.getItem("users") || "{}");
+// Tự động điền mật khẩu khi nhập tài khoản
+document.getElementById("loginUser").addEventListener("input", function () {
+  const u = this.value.trim();
+  if (users[u]) {
+    document.getElementById("loginPass").value = users[u];
+  } else {
+    document.getElementById("loginPass").value = "";
+  }
+});
+
 let currentUser = localStorage.getItem("currentUser") || "";
 let soduDauKy = JSON.parse(localStorage.getItem("sodu_dauky") || "{}");
 
