@@ -10,7 +10,7 @@
     background-size:cover;
     padding: 20px; 
   } 
-    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    .card { background: white; padding: 20px 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
     input, select, button { padding: 6px 10px; margin: 5px 0; border-radius: 4px; border: 1px solid #ccc; }
     .btn { background: #2c7be5; color: white; border: none; cursor: pointer; }
     .btn:hover { background: #1a5edc; }
@@ -19,6 +19,78 @@
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid #ccc; padding: 8px; }
     th { background: #f0f0f0; }
+
+    .login-form {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px 1fr; /* label + input, label + input */
+  gap: 12px 20px;
+  align-items: center;
+  max-width: 800px;
+}
+
+.login-form label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.login-form input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px 1fr;  /* 4 cột: label + input + label + input */
+  gap: 15px 25px;
+  margin-bottom: 20px;
+  align-items: center;
+  max-width: 1000px;
+}
+
+
+.form-grid label {
+  font-weight: bold;
+  text-align: right;
+  font-size: 16px;   /* tăng chữ label */
+}
+
+.form-grid input,
+.form-grid select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+.company-info {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px 1fr; /* giống form-grid */
+  gap: 10px 25px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+/* input ngắn hơn */
+.short {
+  max-width: 400px;   /* chỉ chiếm tối đa 180px */
+}
+.long{
+  max-width: 400px;
+}
+
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Chia thành 2 cột có chiều rộng bằng nhau */
+        gap: 10px; /* Khoảng cách giữa các cột */
+    }
+    .grid-item {
+        border: 1px solid black;
+        padding: 10px;
+    }
+    
+
   </style>
 </head>
 <body>
@@ -26,11 +98,28 @@
 
   <div id="loginCard" class="card">
   <h2>Đăng nhập / Đăng ký</h2>
-  <label>Tài khoản: <input type="text" id="loginUser"></label><br>
-  <label>Mật khẩu: <input type="password" id="loginPass"></label><br>
-  <button class="btn" onclick="dangNhap()">Đăng nhập</button>
-  <button class="btn-warning" onclick="dangKy()">Đăng ký</button>
-  
+
+  <div class="login-form">
+    <label for="loginUser">Tài khoản:</label>
+    <input type="text" id="loginUser">
+
+    <label for="loginPass">Mật khẩu:</label>
+    <input type="password" id="loginPass">
+
+    <label for="companyName">Tên công ty:</label>
+    <input type="text" id="companyName" name="companyName">
+
+    <label for="companyCode">Mã công ty:</label>
+    <input type="text" id="companyCode" name="companyCode">
+
+    <label for="chuTich">Chủ tịch:</label>
+    <input type="text" id="chuTich" name="chuTich" required>
+  </div>
+
+  <div style="margin-top:15px;">
+    <button class="btn" onclick="dangNhap()">Đăng nhập</button>
+    <button class="btn-warning" onclick="dangKy()">Đăng ký</button>
+  </div>
 </div>
 
 <div id="mainContent">
@@ -39,27 +128,48 @@
     <button class="btn-danger" onclick="dangXuat()">Đăng xuất</button>
   </div>
 
+  <div class="company-info">
+  <strong>Tên công ty:</strong> <span id="tenCty"></span> &nbsp;&nbsp;
+  <strong>Chủ tịch:</strong> <span id="tenChuTich"></span>
+</div>
+
 <div class="card">
   <h2>Nhập giao dịch</h2>
-  <label>Mã KH: <input type="text" id="maKH" list="danhSachMa" oninput="layTenTuMa()"></label>
-  <datalist id="danhSachMa"></datalist><br>
-  <label>Tên KH: <input type="text" id="ten" list="danhSachTen"></label>
-  <datalist id="danhSachTen"></datalist><br>
-  <label>Ngày: <input type="date" id="ngay"></label><br>
-  <label>Loại: 
-    <select id="loai">
-      <option value="Ghi Nợ">Ghi Nợ</option>
-      <option value="Trả Nợ">Trả Nợ</option>
-    </select>
-  </label><br>
-  <label>Mã hàng hóa: <input type="text" id="mahang" list="danhSachMaHang" oninput="layTenTuMaHang()"></label>
-  <datalist id="danhSachMaHang"></datalist><br>
-  <label>Tên hàng hóa: <input type="text" id="tenhang"></label><br>
-  <label>Số lượng: <input type="number" id="soluong" oninput="capNhatThanhTien()"></label><br>
-  <label>Đơn giá: <input type="number" id="dongia" oninput="capNhatThanhTien()"></label><br>
-  <label>Thành tiền: <input type="number" id="thanhtien" readonly></label>
-  <label>Số dư đầu kỳ: <input type="number" id="sodu"></label>
-<button onclick="luuSoDuDauKy()">Lưu đầu kỳ</button>
+  <form class="form-grid">
+
+  <label for="maKH">Mã KH:</label>
+  <input type="text" id="maKH" list="danhSachMa" oninput="layTenTuMa()">
+  <label for="ten">Tên KH:</label>
+  <input type="text" id="ten" list="danhSachTen">
+
+  <label for="ngay">Ngày:</label>
+  <input type="date" id="ngay">
+  <label for="loai">Loại:</label>
+  <select id="loai">
+    <option value="Ghi Nợ">Ghi Nợ</option>
+    <option value="Trả Nợ">Trả Nợ</option>
+  </select>
+
+  <label for="mahang">Mã hàng hóa:</label>
+  <input type="text" id="mahang" list="danhSachMaHang" oninput="layTenTuMaHang()">
+  <label for="tenhang">Tên hàng hóa:</label>
+  <input type="text" id="tenhang">
+
+  <label for="soluong">Số lượng:</label>
+  <input type="number" id="soluong" oninput="capNhatThanhTien()">
+  <label for="dongia">Đơn giá:</label>
+  <input type="number" id="dongia" oninput="capNhatThanhTien()">
+
+  <label for="thanhtien">Thành tiền:</label>
+  <input type="number" id="thanhtien" readonly>
+  <label for="sodu">Số dư đầu kỳ:</label>
+  <input type="number" id="sodu">
+
+</form>
+
+  </form>
+
+  <button onclick="luuSoDuDauKy()">Lưu đầu kỳ</button>
   <button class="btn" onclick="nhapGiaoDich()">Nhập</button>
   <button class="btn" onclick="xuatExcel()">Xuất Excel</button>
   <button class="btn" onclick="inBaoCao()">In báo cáo</button>
@@ -130,24 +240,69 @@ function luuSoDuDauKy() {
 
 
 function dangNhap() {
-  const u = document.getElementById("loginUser").value.trim();
-  const p = document.getElementById("loginPass").value;
-  if (!u || !p) return alert("Vui lòng nhập đủ thông tin!");
-  if (!users[u] || users[u] !== p) return alert("Sai tài khoản hoặc mật khẩu");
-  localStorage.setItem("currentUser", u);
-  location.reload();
+  const username = document.getElementById("loginUser").value.trim();
+  const password = document.getElementById("loginPass").value.trim();
+
+  let users = JSON.parse(localStorage.getItem("users")) || {};
+
+  if (!users[username]) {
+    alert("User không tồn tại");
+    return;
+  }
+
+  if (users[username].password === password) {
+    localStorage.setItem("currentUser", username);
+
+    // Lấy dữ liệu user
+    const userData = users[username];
+
+    // Hiển thị phần chính, ẩn phần đăng nhập
+    document.getElementById("loginCard").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+
+    // Điền thông tin lên form đăng nhập (nếu bạn muốn giữ form này hiển thị)
+    document.getElementById("companyName").value = userData.company;
+    document.getElementById("chuTich").value = userData.chuTich;
+
+    // Hiển thị thông tin chào mừng
+    document.getElementById("tenUser").innerText = username;
+    document.getElementById("tenCty").innerText = userData.company;
+    document.getElementById("tenChuTich").innerText = userData.chuTich;
+
+    alert("Đăng nhập thành công!");
+  } else {
+    alert("Sai mật khẩu!");
+  }
 }
+
+
+
+
 
 function dangKy() {
   const u = document.getElementById("loginUser").value.trim();
   const p = document.getElementById("loginPass").value;
-  if (!u || !p) return alert("Vui lòng nhập đủ thông tin!");
+  const company = document.getElementById("companyName").value.trim();
+  const chuTich = document.getElementById("chuTich").value.trim();
+
+  if (!u || !p || !company || !chuTich) return alert("Vui lòng nhập đủ thông tin!");
+
   if (users[u]) return alert("Tài khoản đã tồn tại!");
-  users[u] = p;
+  
+  users[u] = {
+    password: p,
+    company: company,
+    chuTich: chuTich
+  };
+  // Điền thông tin lên form đăng nhập (nếu bạn muốn giữ form này hiển thị)
+  document.getElementById("companyName").value = userData.company;
+  document.getElementById("chuTich").value = userData.chuTich;
   localStorage.setItem("users", JSON.stringify(users));
   localStorage.setItem("currentUser", u);
   location.reload();
 }
+
+
 
 function dangXuat() {
   localStorage.removeItem("currentUser");
@@ -155,6 +310,9 @@ function dangXuat() {
 }
 
 window.onload = () => {
+  capNhatBang();
+  capNhatDataLists();
+
   if (!currentUser) {
     document.getElementById("loginCard").style.display = "block";
     document.getElementById("mainContent").style.display = "none";
@@ -162,8 +320,48 @@ window.onload = () => {
     document.getElementById("loginCard").style.display = "none";
     document.getElementById("mainContent").style.display = "block";
     document.getElementById("tenUser").innerText = currentUser;
+
+    // Lấy dữ liệu user hiện tại
+    const users = JSON.parse(localStorage.getItem("users")) || {};
+    const userData = users[currentUser];
+    if (userData) {
+      document.getElementById("tenCty").innerText = userData.company;
+      document.getElementById("tenChuTich").innerText = userData.chuTich;
+
+      // Nếu muốn tự động điền vào form login ẩn
+      document.getElementById("companyName").value = userData.company;
+      document.getElementById("chuTich").value = userData.chuTich;
+    }
   }
 };
+
+
+
+
+
+function capNhatDataLists() {
+  const dsMa = document.getElementById("danhSachMa");
+  const dsTen = document.getElementById("danhSachTen");
+  const dsMaHang = document.getElementById("danhSachMaHang");
+  dsMa.innerHTML = "";
+  dsTen.innerHTML = "";
+  dsMaHang.innerHTML = "";
+
+  for (const ma in maTenMap) {
+    const opt = document.createElement("option");
+    opt.value = ma;
+    dsMa.appendChild(opt);
+    const optTen = document.createElement("option");
+    optTen.value = maTenMap[ma];
+    dsTen.appendChild(optTen);
+  }
+  for (const ma in maHangMap) {
+    const opt = document.createElement("option");
+    opt.value = ma;
+    dsMaHang.appendChild(opt);
+  }
+}
+
 
 function layTenTuMaHang() {
   const ma = document.getElementById("mahang").value.trim();
@@ -320,3 +518,5 @@ window.onload = () => {
 
 </body>
 </html>
+
+
